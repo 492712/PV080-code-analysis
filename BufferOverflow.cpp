@@ -22,27 +22,27 @@ void demoBufferOverflowData() {
 	char    passwd[USER_INPUT_MAX_LENGTH];
 
 	// print some info about variables
-	printf("%-20s: %p\n", "userName", userName);
-	printf("%-20s: %p\n", "passwd", passwd);
-	printf("%-20s: %p\n", "unused_variable", &unused_variable);
-	printf("%-20s: %p\n", "userRights", &userRights);
-	printf("%-20s: %p\n", "demoBufferOverflowData", demoBufferOverflowData);
+    (void)printf("%-20s: %p\n", "userName", userName);
+    (void)printf("%-20s: %p\n", "passwd", passwd);
+    (void)printf("%-20s: %p\n", "unused_variable", &unused_variable);
+    (void)printf("%-20s: %p\n", "userRights", &userRights);
+    (void)printf("%-20s: %p\n", "demoBufferOverflowData", demoBufferOverflowData);
 	// problem
-	printf("\n");
+    (void)printf("\n");
 
 	// Get user name
 	memset(userName, 1, USER_INPUT_MAX_LENGTH);
 	memset(passwd, 2, USER_INPUT_MAX_LENGTH);
-	printf("login as: ");
+    (void)printf("login as: ");
 	fflush(stdout);
 	//gets(userName); // use scanf("%s", userName); if gets fails with identifier not found
-	scanf("%s", userName);
+    (void)scanf("%s", userName);
 
 	// Get password
-	printf("%s@vulnerable.machine.com: ", userName);
-	fflush(stdout);
+    (void)printf("%s@vulnerable.machine.com: ", userName);
+    (void)fflush(stdout);
 	//gets(passwd);  
-	scanf("%s", passwd); // use scanf("%s", passwd); if gets fails with identifier not found
+    (void)scanf("%s", passwd); // use scanf("%s", passwd); if gets fails with identifier not found
 
 	// Check user rights (set to NORMAL_USER and not changed in code)
 	if (userRights == NORMAL_USER) {
@@ -83,16 +83,16 @@ void demoAdjacentMemoryOverflow(char* userName, char* password) {
 
 	memset(buf, 0, sizeof(buf));
 	memset(message, 1, sizeof(message));
-	strncpy(buf, userName, sizeof(buf));              // We will copy only characters which fits into buf
+    (void)strncpy(buf, userName, sizeof(buf));              // We will copy only characters which fits into buf
 
 													  // Now print username to standard output - nothing sensitive, right?
-	sprintf(message, "Checking '%s' password\n", buf);
-	printf("%s", message);
+    (void)sprintf(message, "Checking '%s' password\n", buf);
+    (void)printf("%s", message);
 	if (strcmp(password, realPassword) == 0) {
-		printf("Correct password.\n");
+        (void)printf("Correct password.\n");
 	}
 	else {
-		printf("Wrong password.\n");
+        (void)printf("Wrong password.\n");
 	}
 
 	// FIX: Do not allow to have non-terminated string 
@@ -100,21 +100,21 @@ void demoAdjacentMemoryOverflow(char* userName, char* password) {
 	// strncpy(buf,arg1,sizeof(buf) - 1);
 }
 
-typedef struct _some_structure {
+typedef struct some_structure {
 	float   someData[1000];
 } some_structure;
 
 void demoDataTypeOverflow(int totalItemsCount, some_structure* pItem, int itemPosition) {
 	// See http://blogs.msdn.com/oldnewthing/archive/2004/01/29/64389.aspx
-	some_structure* data_copy = NULL;
+	some_structure* data_copy = nullptr;
 	int bytesToAllocation = totalItemsCount * sizeof(some_structure);
-	printf("Bytes to allocation: %d\n", bytesToAllocation);
+    (void)printf("Bytes to allocation: %d\n", bytesToAllocation);
 	data_copy = (some_structure*)malloc(bytesToAllocation);
 	if (itemPosition >= 0 && itemPosition < totalItemsCount) {
 		memcpy(&(data_copy[itemPosition]), pItem, sizeof(some_structure));
 	}
 	else {
-		printf("Out of bound assignment");
+        (void)printf("Out of bound assignment");
 		return;
 	}
 	free(data_copy);
@@ -122,15 +122,15 @@ void demoDataTypeOverflow(int totalItemsCount, some_structure* pItem, int itemPo
 
 
 int main() {
-	printf("%-20s: %p\n", "main", main);
-	printf("\n");
+    (void)printf("%-20s: %p\n", "main", main);
+    (void)printf("\n");
 
 	//
 	// Let's play with buffer overflow - change internal data
 	// VS, Debug mode
 	//
 
-	printf("\n\n#### demoBufferOverflowData ####\n");
+    (void)printf("\n\n#### demoBufferOverflowData ####\n");
 	demoBufferOverflowData();
 	demoBufferOverflowData();
 	/**/
